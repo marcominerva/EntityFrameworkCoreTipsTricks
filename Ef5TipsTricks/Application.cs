@@ -1,4 +1,5 @@
 ﻿using Ef5TipsTricks.DataAccess;
+using Ef5TipsTricks.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -6,15 +7,24 @@ namespace Ef5TipsTricks
 {
     public class Application
     {
-        private readonly DataContext dataContext;
+        private readonly IDataContext dataContext;
 
-        public Application(DataContext dataContext)
+        public Application(IDataContext dataContext)
             => this.dataContext = dataContext;
 
         public async Task RunAsync()
         {
-            var people = await dataContext.People.Include(p => p.Addresses).ToListAsync();
-            await dataContext.Addresses.ToListAsync();
+            //var newPerson = new Person
+            //{
+            //    FirstName = " Scrooge",
+            //    LastName = "McDuck "
+            //};
+
+            //dataContext.Add(newPerson);
+            //await dataContext.SaveChangesAsync();
+
+            var people = await dataContext.Get<Person>()
+                .Include(p => p.Addresses).ToListAsync();
 
             //var person = await dataContext.People.FirstOrDefaultAsync();
             //dataContext.Remove(person);

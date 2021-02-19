@@ -9,15 +9,15 @@ var host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(ConfigureServices)
     .Build();
 
-var dataContext = host.Services.GetService<DataContext>();
-await dataContext.Database.EnsureCreatedAsync();
+//var dataContext = host.Services.GetService<DataContext>();
+//await dataContext.Database.EnsureCreatedAsync();
 
 var application = host.Services.GetService<Application>();
 await application.RunAsync();
 
 void ConfigureServices(HostBuilderContext hostingContext, IServiceCollection services)
 {
-    services.AddDbContext<DataContext>(options =>
+    services.AddDbContext<IDataContext, DataContext>(options =>
     {
         var sqlConnection = hostingContext.Configuration.GetConnectionString("SqlConnection");
         options.UseSqlServer(sqlConnection,
